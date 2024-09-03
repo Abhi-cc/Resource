@@ -1,0 +1,42 @@
+services:
+  db:
+    image: mariadb:10
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    container_name: vikunja_db
+    environment:
+      MYSQL_ROOT_PASSWORD: <Add yr Root Password>
+      MYSQL_USER: vikunja
+      MYSQL_PASSWORD: < Add Mysql databse password>
+      MYSQL_DATABASE: vikunja
+    volumes:
+      - ./db:/var/lib/mysql #Map the volume to the directory of yr choice on local file system
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u $$MYSQL_USER --password=$$MYSQL_PASSWORD"]
+      interval: 2s
+      start_period: 30s
+  vikunja:
+    image: vikunja/vikunja<Version Tag here>
+    container_name: vikunja
+    environment:
+      VIKUNJA_DATABASE_HOST: db
+      VIKUNJA_DATABASE_PASSWORD: <Same as mysql password>
+      VIKUNJA_DATABASE_TYPE: mysql
+      VIKUNJA_DATABASE_USER: vikunja
+      VIKUNJA_DATABASE_DATABASE: vikunja
+      VIKUNJA_SERVICE_JWTSECRET: <Use a randomize  secret>
+      VIKUNJA_SERVICE_FRONTENDURL: <Your server Ipaddress or hostname or Dns name>
+    ports:
+      - 80:80   # If port is already in use which is the case most of time use a different port.
+    volumes: 
+      - ./files:/app/vikunja/files # #Map the volume to the directory of yr choice on local file system
+    depends_on:
+      - db:
+           condition: service_healthy
+    restart: unless-stopped
+
+    ## Room For improvement
+
+    #Put a reverse froxy infront for https traffic or Tunnel the entire traffic through VPN.
+    # Config the mail service for the notifications to be delivered to the mail box e.g Use gmail SMTP server 
+ 
