@@ -1,0 +1,15 @@
+#Disable port 80
+services:
+   heimdall:
+     image: lscr.io/linuxserver/heimdall:<Version Tag>
+     container_name: heimdall
+     environment:
+        - PUID=1000
+        - GUID=1000
+        - TZ=<Your TimeZOne>
+     volumes:
+        - ~/heimdall/:/config
+     ports:
+        - 80:80
+        - 443:443
+     restart: unless-stopped
