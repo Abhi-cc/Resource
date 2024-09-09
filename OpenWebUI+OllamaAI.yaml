@@ -1,0 +1,17 @@
+services:
+  openwebUI:
+    container_name: openwebUI
+    image: ghcr.io/open-webui/open-webui:main
+    environment:
+      - WEBUI_NAME=Talker
+      - WEBUI_SESSION_COOKIE_SECURE=True
+    ports:
+      - "3000:8080"
+    #extra-hosts:  i tested it working without this line. If u have error connecting to Ollama API. uncomment this line.
+     # - host.docker.internal:host-gateway  #his line makes it possible for containers in your project to access the host machine by name (host.docker.internal) and sets up a default gateway for network communication.
+    volumes:
+      - <Path to your Directory>/OpenWebUI:/app/backend/data  #Bind it with local filesystem, if u have trouble finding where docker volume stores data.
+    restart: unless-stopped
+   
+# Work under way
+## Add the full stack of ollama with openwebUI
