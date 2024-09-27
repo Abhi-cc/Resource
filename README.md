@@ -1,7 +1,3 @@
-# This Repo will contain Templates , CheatSheets , Dot files , Configuration 
-
-
-
 ## Templates for Running Containers 
 
 <img src="https://github.com/user-attachments/assets/7d693488-cf7f-4c28-a127-840426f05747" width="200"/>
